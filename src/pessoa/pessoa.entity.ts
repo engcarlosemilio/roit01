@@ -12,8 +12,14 @@ export class Pessoa {
     idade: number;
 
     @Column()
+    endereco: string;
+
+    @Column()
+    githubId: number;
+
+    @Column()
     githubUser: string;
 
     @Column()
-    endereco: string;
+    githubAvatar: string;
 }

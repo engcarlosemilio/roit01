@@ -50,9 +50,15 @@ export class PessoaService {
         let githubUser = await axios.get(`https://api.github.com/search/users?q=${pessoa.githubUser}`)
         .then(resp => {
             let dados = resp.data.items[0];
-            return dados.avatar_url;
+            return dados;
         });
-        pessoa.githubUser = githubUser;
+
+        //id
+        pessoa.githubId = githubUser.id;
+        //user
+        pessoa.githubUser = githubUser.login;
+        //avatar
+        pessoa.githubAvatar = githubUser.avatar_url;
         return pessoa;
     }
 }

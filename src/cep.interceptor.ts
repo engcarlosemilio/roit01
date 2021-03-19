@@ -1,0 +1,23 @@
+import {CallHandler, ExecutionContext, Injectable, NestInterceptor} from '@nestjs/common'
+import { Observable } from 'rxjs'
+import { map, catchError } from 'rxjs/operators'
+
+import { ErrorResponse } from './ErrorResponse'
+import { OkResponse } from './OkResponse'
+
+@Injectable()
+export class CepResponseInterceptor implements NestInterceptor {
+
+    intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+        return next
+            .handle()
+            .pipe(
+                map(data => OkResponse(data))
+            )
+            .pipe(
+                // eslint-disable-next-line
+                catchError(async (data: Error) => ErrorResponse("An unexpected error occurred during an execution", Array.isArray(data?.message) ? data?.message : [data?.message]))
+            )
+    }
+
+}
