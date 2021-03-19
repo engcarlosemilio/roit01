@@ -10,12 +10,12 @@ import { Environment } from 'roit-environment';
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: Environment.getProperty("mysql.host"),
-      port: 3306,
+      port: +Environment.getProperty("mysql.port"),
       username: Environment.getProperty("mysql.user"),
       password: Environment.getProperty("mysql.pass"),
       database: Environment.getProperty("mysql.database"),
-      autoLoadEntities:  Environment.currentEnv() == 'dev' ? true: false,  //Não usar em ambiente de produção. Isso aqui deleta todas as tabelas e as recria
-      synchronize: Environment.getProperty("mysql.synchronize") == 'true'? true: false,
+      autoLoadEntities:  Environment.currentEnv() === 'dev' ? true: false,
+      synchronize: Environment.getProperty("mysql.synchronize") === 'true',
     }),
     PessoaModule],
   controllers: [AppController],
