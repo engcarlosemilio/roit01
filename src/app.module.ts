@@ -3,18 +3,19 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PessoaModule } from './pessoa/pessoa.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Environment } from 'roit-environment';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: Environment.getProperty("mysql.host"),
       port: 3306,
-      username: 'root',
-      password: 'carlos',
-      database: 'roit',
-      autoLoadEntities: true,  //Não usar em ambiente de produção. Isso aqui deleta todas as tabelas e as recria
-      synchronize: true,
+      username: Environment.getProperty("mysql.user"),
+      password: Environment.getProperty("mysql.pass"),
+      database: Environment.getProperty("mysql.database"),
+      autoLoadEntities:  Environment.currentEnv() == 'dev' ? true: false,  //Não usar em ambiente de produção. Isso aqui deleta todas as tabelas e as recria
+      synchronize: Environment.getProperty("mysql.synchronize") == 'true'? true: false,
     }),
     PessoaModule],
   controllers: [AppController],
